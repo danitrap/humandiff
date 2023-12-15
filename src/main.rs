@@ -57,7 +57,7 @@ fn get_git_diff() -> Result<String, Box<dyn std::error::Error>> {
 fn user_message(content: &String) -> chat_completion::ChatCompletionMessage {
     chat_completion::ChatCompletionMessage {
         role: chat_completion::MessageRole::user,
-        content,
+        content: content.to_string(),
         function_call: None,
         name: None,
     }
