@@ -37,7 +37,10 @@ fn get_git_diff() -> Result<String, Box<dyn std::error::Error>> {
         return Err("Not in a git repo".into());
     }
 
-    let output = std::process::Command::new("git").arg("diff").output()?;
+    let output = std::process::Command::new("git")
+        .arg("diff")
+        .arg("HEAD")
+        .output()?;
     if !output.status.success() {
         return Err("Failed to execute git diff".into());
     }
