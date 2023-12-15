@@ -31,6 +31,12 @@ Inside a git repo, run:
   humandiff
 ```
 
+or
+
+```bash
+  humandiff --gpt4
+```
+
 Example output:
 
 ```bash

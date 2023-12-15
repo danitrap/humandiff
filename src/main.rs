@@ -1,6 +1,6 @@
 use openai_api_rs::v1::api::Client;
 use openai_api_rs::v1::chat_completion::{self, ChatCompletionRequest, FunctionCallType};
-use openai_api_rs::v1::common::GPT4;
+use openai_api_rs::v1::common::{GPT3_5_TURBO, GPT4};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 use std::{env, vec};
@@ -16,8 +16,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let api_token = env::var("OPENAI_API_KEY")?;
     let client = Client::new(api_token);
+    let model = get_model();
 
-    let req = ChatCompletionRequest::new(GPT4.to_string(), vec![user_message(prompt)])
+    let req = ChatCompletionRequest::new(model, vec![user_message(prompt)])
         .functions(build_openai_functions())
         .function_call(FunctionCallType::Auto);
 
@@ -52,6 +53,15 @@ fn get_git_diff() -> Result<String, Box<dyn std::error::Error>> {
     }
 
     Ok(git_diff.to_string())
+}
+
+fn get_model() -> String {
+    let args: Vec<String> = env::args().collect();
+    let mut model = GPT3_5_TURBO.to_string();
+    if args.len() > 1 && args[1] == "--gpt4" {
+        model = GPT4.to_string();
+    }
+    model
 }
 
 fn user_message(content: String) -> chat_completion::ChatCompletionMessage {
