@@ -17,7 +17,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let api_token = env::var("OPENAI_API_KEY")?;
     let client = Client::new(api_token);
 
-    let req = ChatCompletionRequest::new(GPT4.to_string(), vec![user_message(&prompt)])
+    let req = ChatCompletionRequest::new(GPT4.to_string(), vec![user_message(prompt)])
         .functions(build_openai_functions())
         .function_call(FunctionCallType::Auto);
 
@@ -54,10 +54,10 @@ fn get_git_diff() -> Result<String, Box<dyn std::error::Error>> {
     Ok(git_diff.to_string())
 }
 
-fn user_message(content: &String) -> chat_completion::ChatCompletionMessage {
+fn user_message(content: String) -> chat_completion::ChatCompletionMessage {
     chat_completion::ChatCompletionMessage {
         role: chat_completion::MessageRole::user,
-        content: content.to_string(),
+        content,
         function_call: None,
         name: None,
     }
