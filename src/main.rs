@@ -18,6 +18,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let git_diff = String::from_utf8_lossy(&output.stdout);
 
+    // check if git_diff is empty
+    if git_diff.trim().is_empty() {
+        eprintln!("No changes were made");
+        return Ok(());
+    }
+
     let api_token = env::var("OPENAI_API_KEY")?;
     let client = Client::new(api_token);
 
