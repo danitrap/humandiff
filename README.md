@@ -5,6 +5,17 @@ This project gives you a human readable git diff output.
 It leverages OpenAI GPT-4 to generate a summary of the diff
 and suggests a commit message.
 
+## Prerequisites
+
+Make sure you have the following installed:
+
+- [Rust](https://www.rust-lang.org/tools/install)
+- [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+
+And that you have the following environment variables set:
+
+- `OPENAI_API_KEY`: Your OpenAI API key. You can get one [here](https://beta.openai.com/).
+
 ## Installation
 
 ```bash
