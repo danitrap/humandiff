@@ -28,19 +28,19 @@ And that you have the following environment variables set:
 Inside a git repo, run:
 
 ```bash
-  humandiff
+  git diff | humandiff
 ```
 
 or
 
 ```bash
-  humandiff --gpt4
+  git diff | humandiff --gpt4
 ```
 
 Example output:
 
 ```bash
-$ humandiff
+$ git diff | humandiff
 Concise explanation: A new README file was added to the repository. This file
 includes information about the 'humandiff' project, which is a tool that
 generates a human-readable git diff output using GPT-4. It also includes
