@@ -3,6 +3,7 @@ use openai_api_rs::v1::chat_completion::{self, ChatCompletionRequest, FunctionCa
 use openai_api_rs::v1::common::{GPT3_5_TURBO, GPT4};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
+use std::io::Read;
 use std::{env, vec};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -34,25 +35,25 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 fn get_git_diff() -> Result<String, Box<dyn std::error::Error>> {
-    if !std::path::Path::new(".git").exists() {
-        return Err("Not in a git repo".into());
+    let mut stdin = std::io::stdin().lock();
+
+    let mut line = String::new();
+
+    let mut diff = String::new();
+
+    while let Ok(n_bytes) = stdin.read_to_string(&mut line) {
+        if n_bytes == 0 {
+            break;
+        }
+        diff += &line;
+        line.clear();
     }
 
-    let output = std::process::Command::new("git")
-        .arg("diff")
-        .arg("HEAD")
-        .output()?;
-    if !output.status.success() {
-        return Err("Failed to execute git diff".into());
+    if diff.is_empty() {
+        return Err("No diff provided, pipe your diff to me, plz".into());
     }
 
-    let git_diff = String::from_utf8_lossy(&output.stdout);
-
-    if git_diff.trim().is_empty() {
-        return Err("No changes were made".into());
-    }
-
-    Ok(git_diff.to_string())
+    Ok(diff)
 }
 
 fn get_model() -> String {
